@@ -1,0 +1,11 @@
+C:\Users\prady\source\repos\2019 prerelease task 1\2019 prerelease task 1\bin\Debug\2019 prerelease task 1.exe.config
+C:\Users\prady\source\repos\2019 prerelease task 1\2019 prerelease task 1\bin\Debug\2019 prerelease task 1.exe
+C:\Users\prady\source\repos\2019 prerelease task 1\2019 prerelease task 1\bin\Debug\2019 prerelease task 1.pdb
+C:\Users\prady\source\repos\2019 prerelease task 1\2019 prerelease task 1\bin\Debug\2019 prerelease task 1.xml
+C:\Users\prady\source\repos\2019 prerelease task 1\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.vbprojAssemblyReference.cache
+C:\Users\prady\source\repos\2019 prerelease task 1\2019 prerelease task 1\obj\Debug\_2019_prerelease_task_1.Resources.resources
+C:\Users\prady\source\repos\2019 prerelease task 1\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.vbproj.GenerateResource.cache
+C:\Users\prady\source\repos\2019 prerelease task 1\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.vbproj.CoreCompileInputs.cache
+C:\Users\prady\source\repos\2019 prerelease task 1\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.exe
+C:\Users\prady\source\repos\2019 prerelease task 1\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.xml
+C:\Users\prady\source\repos\2019 prerelease task 1\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.pdb
