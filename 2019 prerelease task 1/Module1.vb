@@ -16,7 +16,7 @@
             Case 3
                 Call EndingMonth()
         End Select
-
+        Console.Write("hey guys this is a test")
     End Sub
 
     Sub AddNewMember()
