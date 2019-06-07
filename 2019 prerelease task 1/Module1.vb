@@ -16,7 +16,7 @@
             Case 3
                 Call EndingMonth()
         End Select
-        Console.Write("oh damn oh damn OH DAMN")
+
     End Sub
 
     Sub AddNewMember()
