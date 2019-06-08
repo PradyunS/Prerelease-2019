@@ -1,23 +1,22 @@
 ﻿Module Module1
-
+    Dim recordCount As Integer = LoadValues()
     Sub Main()
         Dim selection As String
         Dim valid As Boolean = False
-        Dim recordCount As Integer = LoadValues()
+
         Console.WriteLine("1. add new member, 2. search for member, 3. membership ending month")
         Console.Write("what action would you like to perform? ")
-
         Do
             selection = CStr(Console.ReadLine)
             If selection = "1" Or selection = "2" Or selection = "3" Then
                 valid = True
                 Select Case selection
                     Case 1
-                        Call AddNewMember(recordCount)
+                        Call AddNewMember()
                     Case 2
-                        Call SearchMembers(recordCount)
+                        Call SearchMembers()
                     Case 3
-                        Call EndingMonth(recordCount)
+                        Call EndingMonth()
                 End Select
             Else
                 Console.Write("enter a valid selection(1, 2, or 3): ")
@@ -25,7 +24,7 @@
         Loop Until valid = True
     End Sub
 
-    Sub AddNewMember(ByVal recordcount As Integer)
+    Sub AddNewMember()
         Dim id, name, email, joinMonth, activestatus, mon As String
         Dim valid As Boolean = False
         Console.WriteLine()
@@ -87,12 +86,19 @@
 
         'update recordcount
         FileOpen(2, "savedata.txt", OpenMode.Output)
-        Print(2, recordcount + 1)
+        Print(2, recordCount + 1)
         FileClose(2)
+
+
+        Console.Write("enter h to go back home or any other key to exit: ")
+        If Console.ReadLine = "h" Then
+            Call Main()
+        End If
+
         Console.ReadKey()
     End Sub
 
-    Sub SearchMembers(ByVal recordCount As Integer)
+    Sub SearchMembers()
         Console.WriteLine()
         FileOpen(1, "member.txt", OpenMode.Input)
 
@@ -135,17 +141,21 @@
         Console.WriteLine()
 
         If isfound = True Then
-            Console.WriteLine(DisplaySearchTable(email(foundvalue)))
+            Console.WriteLine(DisplaySearchTable())
             Console.Write(ids(foundvalue).PadRight(20) & names(foundvalue).PadRight(20) & email(foundvalue).PadRight(40) & month(foundvalue).PadRight(20) & active(foundvalue).PadRight(20))
         ElseIf isfound = False Then
             Console.Write("your search was not found. make sure the ID number is correct or ensure you're using the full name.")
         End If
 
+        Console.Write("enter h to go back home or any other key to exit: ")
+        If Console.ReadLine = "h" Then
+            Call Main()
+        End If
 
         Console.ReadKey()
     End Sub
 
-    Sub EndingMonth(ByRef recordCount As Integer)
+    Sub EndingMonth()
         Dim values(recordCount), input, names(recordCount), email(recordCount), ids(recordCount), active(recordCount), month(recordCount) As String
         Dim i As Integer = 0
 
@@ -157,6 +167,7 @@
             values(i) = LineInput(1)
             i += 1
         End While
+        FileClose(1)
 
         For a As Integer = 0 To recordCount
             ids(a) = values(a).Split("!").First
@@ -173,13 +184,28 @@
             End If
         Next
 
-        FileClose(1)
+        Console.Write("do you want to save this information to a new file? (y/n): ")
+        If Console.ReadLine = "y" Then
+            FileOpen(1, "expiredmembers.txt", OpenMode.Append)
+            For m As Integer = 0 To recordCount
+                If values(m).Substring(0, 2) < CStr(Now).Split("/").Skip(1).First Then
+                    PrintLine(1, names(m).PadRight(20) & email(m).PadRight(40))
+                End If
+            Next
+            Console.WriteLine("success")
+            FileClose(1)
+        End If
+
+        Console.Write("enter h to go back home or any other key to exit: ")
+        If Console.ReadLine = "h" Then
+            Call Main()
+        End If
 
         Console.ReadKey()
     End Sub
 
     Function validate(ByRef email As String) As Boolean
-        If email.IndexOf("@") >= 0 And email.IndexOf("@") <= email.Length Then
+        If email.IndexOf("@") >= 0 And email.IndexOf("@") <= email.Length & email.indexof(".") >= 0 & email.indexof(".") <= email.length Then
             Return True
         Else
             Return False
@@ -212,25 +238,5 @@
         Return values
     End Function
 
-    ' Sub InputRecordsFromFile(ByVal ids As String, ByVal names As String, ByVal email As String, ByVal month As String, ByVal active As String, ByRef recordCount As Integer)
-    '     'needs to have:  Dim values(recordCount), input, names(recordCount), email(recordCount), ids(recordCount), active(recordCount), month(recordCount) As String
-    '     Dim i As Integer = 0
-    '     Dim values(recordCount) As String
-    '     FileOpen(1, "member.txt", OpenMode.Input)
-    '
-    '     While Not EOF(1)
-    '         values(i) = LineInput(1)
-    '         i += 1
-    '     End While
-    '
-    '     For a As Integer = 0 To recordCount
-    '         ids(a) = values(a).Split("!").First
-    '         names(a) = values(a).Split("!").Skip(1).First
-    '         email(a) = values(a).Split("!").Skip(2).First
-    '         month(a) = values(a).Split("!").Skip(3).First
-    '         active(a) = values(a).Split("!").Skip(4).First
-    '     Next
-    '     FileClose(1)
-    ' End Sub
 
 End Module
