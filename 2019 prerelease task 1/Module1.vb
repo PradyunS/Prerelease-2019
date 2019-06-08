@@ -1,6 +1,5 @@
 ﻿Module Module1
 
-
     Sub Main()
         Dim selection As String
         Dim valid As Boolean = False
@@ -18,7 +17,7 @@
                     Case 2
                         Call SearchMembers(recordCount)
                     Case 3
-                        Call EndingMonth()
+                        Call EndingMonth(recordCount)
                 End Select
             Else
                 Console.Write("enter a valid selection(1, 2, or 3): ")
@@ -108,7 +107,6 @@
         End While
 
         For i As Integer = 0 To l
-            'values(i) = LineInput(1)
             ids(i) = values(i).Split("!").First
             names(i) = values(i).Split("!").Skip(1).First
             email(i) = values(i).Split("!").Skip(2).First
@@ -138,7 +136,7 @@
 
         If isfound = True Then
             Console.WriteLine(DisplaySearchTable(email(foundvalue)))
-            Console.Write(ids(foundvalue).PadRight(20) & names(foundvalue).PadRight(20) & email(foundvalue).PadRight(Len(email(foundvalue)) + 5) & month(foundvalue).PadRight(20) & active(foundvalue).PadRight(20))
+            Console.Write(ids(foundvalue).PadRight(20) & names(foundvalue).PadRight(20) & email(foundvalue).PadRight(40) & month(foundvalue).PadRight(20) & active(foundvalue).PadRight(20))
         ElseIf isfound = False Then
             Console.Write("your search was not found. make sure the ID number is correct or ensure you're using the full name.")
         End If
@@ -147,8 +145,37 @@
         Console.ReadKey()
     End Sub
 
-    Sub EndingMonth()
+    Sub EndingMonth(ByRef recordCount As Integer)
+        Dim values(recordCount), input, names(recordCount), email(recordCount), ids(recordCount), active(recordCount), month(recordCount) As String
+        Dim i As Integer = 0
 
+        Console.Write("enter the month you would like to view as a number (01 to 12): ")
+        input = Console.ReadLine
+
+        FileOpen(1, "member.txt", OpenMode.Input)
+        While Not EOF(1)
+            values(i) = LineInput(1)
+            i += 1
+        End While
+
+        For a As Integer = 0 To recordCount
+            ids(a) = values(a).Split("!").First
+            names(a) = values(a).Split("!").Skip(1).First
+            email(a) = values(a).Split("!").Skip(2).First
+            month(a) = values(a).Split("!").Skip(3).First
+            active(a) = values(a).Split("!").Skip(4).First
+        Next
+
+        Console.WriteLine(DisplaySearchTable)
+        For j As Integer = 0 To recordCount
+            If input = values(j).Substring(0, 2) Then
+                Console.WriteLine(ids(j).PadRight(20) & names(j).PadRight(20) & email(j).PadRight(40) & month(j).PadRight(20) & active(j).PadRight(20))
+            End If
+        Next
+
+        FileClose(1)
+
+        Console.ReadKey()
     End Sub
 
     Function validate(ByRef email As String) As Boolean
@@ -173,17 +200,37 @@
         Return joinMonth & letter & num(0) & num(1) & num(2) & num(3)
     End Function
 
-    Function DisplaySearchTable(ByRef email As String) As String
-        Return "ID number".PadRight(20) & "Name".PadRight(20) & "Email".PadRight(Len(email) + 5) & "Month joined".PadRight(20) & "member?".PadRight(20)
+    Function DisplaySearchTable() As String
+        Return "ID number".PadRight(20) & "Name".PadRight(20) & "Email".PadRight(40) & "Month joined".PadRight(20) & "member?".PadRight(20)
     End Function
 
     Function LoadValues()
-        FileOpen(1, "savedata.txt", OpenMode.Input)
         Dim values As String
-
+        FileOpen(1, "savedata.txt", OpenMode.Input)
         values = LineInput(1)
         FileClose(1)
         Return values
     End Function
+
+    ' Sub InputRecordsFromFile(ByVal ids As String, ByVal names As String, ByVal email As String, ByVal month As String, ByVal active As String, ByRef recordCount As Integer)
+    '     'needs to have:  Dim values(recordCount), input, names(recordCount), email(recordCount), ids(recordCount), active(recordCount), month(recordCount) As String
+    '     Dim i As Integer = 0
+    '     Dim values(recordCount) As String
+    '     FileOpen(1, "member.txt", OpenMode.Input)
+    '
+    '     While Not EOF(1)
+    '         values(i) = LineInput(1)
+    '         i += 1
+    '     End While
+    '
+    '     For a As Integer = 0 To recordCount
+    '         ids(a) = values(a).Split("!").First
+    '         names(a) = values(a).Split("!").Skip(1).First
+    '         email(a) = values(a).Split("!").Skip(2).First
+    '         month(a) = values(a).Split("!").Skip(3).First
+    '         active(a) = values(a).Split("!").Skip(4).First
+    '     Next
+    '     FileClose(1)
+    ' End Sub
 
 End Module
