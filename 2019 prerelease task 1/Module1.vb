@@ -1,20 +1,22 @@
 ﻿Module Module1
 
+
     Sub Main()
         Dim selection As String
         Dim valid As Boolean = False
+        Dim recordCount As Integer = LoadValues()
         Console.WriteLine("1. add new member, 2. search for member, 3. membership ending month")
         Console.Write("what action would you like to perform? ")
 
         Do
             selection = CStr(Console.ReadLine)
-            If selection = "0" Or selection = "2" Or selection = "3" Then
+            If selection = "1" Or selection = "2" Or selection = "3" Then
                 valid = True
                 Select Case selection
                     Case 1
-                        Call AddNewMember()
+                        Call AddNewMember(recordCount)
                     Case 2
-                        Call SearchMembers()
+                        Call SearchMembers(recordCount)
                     Case 3
                         Call EndingMonth()
                 End Select
@@ -24,7 +26,7 @@
         Loop Until valid = True
     End Sub
 
-    Sub AddNewMember()
+    Sub AddNewMember(ByVal recordcount As Integer)
         Dim id, name, email, joinMonth, activestatus, mon As String
         Dim valid As Boolean = False
         Console.WriteLine()
@@ -84,30 +86,40 @@
 
         FileClose(1)
 
+        'update recordcount
+        FileOpen(2, "savedata.txt", OpenMode.Output)
+        Print(2, recordcount + 1)
+        FileClose(2)
         Console.ReadKey()
     End Sub
 
-    Sub SearchMembers()
+    Sub SearchMembers(ByVal recordCount As Integer)
         Console.WriteLine()
         FileOpen(1, "member.txt", OpenMode.Input)
-        Dim names(Len(1)), email(Len(1)), values(Len(1)), ids(Len(1)), search, month(Len(1)), active(Len(1)) As String
+
+        Dim l As Integer = recordCount
+        Dim names(l), email(l), values(l), ids(l), search, month(l), active(l) As String
         Dim isfound As Boolean = False
-        Dim i, foundvalue As Integer
+        Dim o, foundvalue As Integer
 
         While Not EOF(1)
-            values(i) = LineInput(1)
+            values(o) = LineInput(1)
+            o += 1
+        End While
+
+        For i As Integer = 0 To l
+            'values(i) = LineInput(1)
             ids(i) = values(i).Split("!").First
             names(i) = values(i).Split("!").Skip(1).First
             email(i) = values(i).Split("!").Skip(2).First
             month(i) = values(i).Split("!").Skip(3).First
             active(i) = values(i).Split("!").Skip(4).First
-            i += 1
-        End While
+        Next
 
         Console.Write("enter an customer ID or full name to search for: ")
         search = Console.ReadLine
 
-        For s As Integer = 0 To Len(1)
+        For s As Integer = 0 To l
 
             Select Case search
                 Case Is = ids(s)
@@ -150,20 +162,28 @@
     Function GenerateID(ByRef name As String, ByRef email As String, ByRef joinMonth As String) As String
         Dim letter As String
         Dim num(3) As String
-        Rnd()
+        Randomize()
 
-        letter = Asc(name.Substring(0, 1))
+        letter = Asc(name.Substring(0, 1).ToUpper)
 
         For i As Integer = 0 To 3
             num(i) = CStr(Int(10 * Rnd()))
         Next
 
-        Return joinMonth & letter & num(0) & num(1) & num(2) & num(3) & num(3)
+        Return joinMonth & letter & num(0) & num(1) & num(2) & num(3)
     End Function
 
     Function DisplaySearchTable(ByRef email As String) As String
         Return "ID number".PadRight(20) & "Name".PadRight(20) & "Email".PadRight(Len(email) + 5) & "Month joined".PadRight(20) & "member?".PadRight(20)
     End Function
 
+    Function LoadValues()
+        FileOpen(1, "savedata.txt", OpenMode.Input)
+        Dim values As String
+
+        values = LineInput(1)
+        FileClose(1)
+        Return values
+    End Function
 
 End Module

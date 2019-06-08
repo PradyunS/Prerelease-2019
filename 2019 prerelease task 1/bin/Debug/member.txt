@@ -3,3 +3,6 @@
 04185432!Ryan Howard!rhoward@pafiredept.gov!APR!TRUE
 01134592!Michael Scott!survivorman@hotmail.com!JAN!FALSE
 02684589!Creed Bratton!WilliamSchneider@creedthoughts.gov!FEB!TRUE
+06807144!Pradyun Setti!pradyun.setti@gmail.com!JUN!True
+06834074!Stanley Hudson!stanley@florida.com!JUN!False
+06756543!Kevin Malone!Kevin@chillipies.com!JUN!False
