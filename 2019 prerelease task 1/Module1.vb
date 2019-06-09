@@ -1,8 +1,14 @@
 ﻿Module Module1
     Dim recordCount As Integer = LoadValues()
+
     Sub Main()
         Dim selection As String
         Dim valid As Boolean = False
+
+        'display title sequence
+        Console.WriteLine("#########################################################")
+        Console.WriteLine("############Dwight Schrute's Gym For Muscules############")
+        Console.WriteLine("#########################################################")
 
         Console.WriteLine("1. add new member, 2. search for member, 3. membership ending month")
         Console.Write("what action would you like to perform? ")
@@ -27,6 +33,8 @@
     Sub AddNewMember()
         Dim id, name, email, joinMonth, activestatus, mon As String
         Dim valid As Boolean = False
+        joinMonth = CStr(Now).Split("/").Skip(1).First
+
         Console.WriteLine()
         Console.Write("enter your first and last name: ")
         name = Console.ReadLine & " "
@@ -38,13 +46,14 @@
             valid = validate(email)
         Loop Until valid = True
 
-        joinMonth = CStr(Now).Split("/").Skip(1).First
-
         Console.Write("do you want to buy a membership? (y/n): ")
         If Console.ReadLine() = "y" Then
             activestatus = True
-        Else
+        ElseIf Console.ReadLine() = "n" Then
             activestatus = False
+        Else
+            activestatus = True
+            Console.Write("oh you wanna try crash this? you paying for membership.")
         End If
 
         id = GenerateID(name, email, joinMonth)
@@ -78,17 +87,14 @@
 
         'add to file
         FileOpen(1, "member.txt", OpenMode.Append)
-
         PrintLine(1, id & "!" & name & "!" & email & "!" & mon & "!" & CStr(activestatus))
         Console.Write("added successfully.")
-
         FileClose(1)
 
         'update recordcount
-        FileOpen(2, "savedata.txt", OpenMode.Output)
-        Print(2, recordCount + 1)
-        FileClose(2)
-
+        FileOpen(1, "savedata.txt", OpenMode.Output)
+        Print(1, recordCount + 1)
+        FileClose(1)
 
         Console.Write("enter h to go back home or enter key to exit: ")
         If Console.ReadLine = "h" Then
