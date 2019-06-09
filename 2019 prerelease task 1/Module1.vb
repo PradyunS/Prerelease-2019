@@ -90,12 +90,11 @@
         FileClose(2)
 
 
-        Console.Write("enter h to go back home or any other key to exit: ")
+        Console.Write("enter h to go back home or enter key to exit: ")
         If Console.ReadLine = "h" Then
             Call Main()
         End If
 
-        Console.ReadKey()
     End Sub
 
     Sub SearchMembers()
@@ -150,17 +149,19 @@
             Console.Write("your search was not found. make sure the ID number or name is correct")
         End If
 
-        Console.Write("enter 'h' to go back home or any other key to exit: ")
+        Console.Write("enter 'h' to go back home or enter key to exit: ")
         If Console.ReadLine = "h" Then
             Call Main()
         End If
 
-        Console.ReadKey()
+
     End Sub
 
     Sub EndingMonth()
-        Dim values(recordCount), input, names(recordCount), email(recordCount), ids(recordCount), active(recordCount), month(recordCount) As String
+        Dim values(recordCount), names(recordCount), email(recordCount), ids(recordCount), active(recordCount), month(recordCount), found(99) As String
         Dim i As Integer = 0
+        Dim input As Integer
+        Dim flag As Boolean = False
 
 
         FileOpen(1, "member.txt", OpenMode.Input)
@@ -183,36 +184,38 @@
 
         Console.WriteLine(DisplaySearchTable)
         For j As Integer = 0 To recordCount
-            If input = values(j).Substring(0, 2) Then
+            If input = CInt(values(j).Substring(1, 1)) Then
                 Console.WriteLine(ids(j).PadRight(20) & names(j).PadRight(20) & email(j).PadRight(40) & month(j).PadRight(20) & active(j).PadRight(20))
-            Else
+                flag = True
+            ElseIf j = recordCount And flag = False Then
                 Console.WriteLine("no members found")
-                Exit For
+                'Exit For
             End If
         Next
 
-        Console.Write("do you want to save this information to a new file? (y/n): ")
-        If Console.ReadLine = "y" Then
-            FileOpen(1, "expiredmembers.txt", OpenMode.Append)
-            For m As Integer = 0 To recordCount
-                If values(m).Substring(0, 2) < CStr(Now).Split("/").Skip(1).First Then
-                    PrintLine(1, names(m).PadRight(20) & email(m).PadRight(40))
-                End If
-            Next
-            Console.WriteLine("success")
-            FileClose(1)
+        If input < CStr(Now).Split("/").Skip(1).First Then
+            Console.Write("these members' membership has expired. do you want to save their information to a new file? (y/n): ")
+            If Console.ReadLine = "y" Then
+                FileOpen(1, "expiredmembers.txt", OpenMode.Append)
+                For m As Integer = 0 To recordCount
+                    If values(m).Substring(0, 2) < CStr(Now).Split("/").Skip(1).First Then
+                        PrintLine(1, names(m).PadRight(20) & email(m).PadRight(40))
+                    End If
+                Next
+                Console.WriteLine("success")
+                FileClose(1)
+            End If
         End If
 
-        Console.Write("enter h to go back home or any other key to exit: ")
+        Console.Write("enter h to go back home or enter key to exit: ")
         If Console.ReadLine = "h" Then
             Call Main()
         End If
 
-        Console.ReadKey()
     End Sub
 
     Function validate(ByRef email As String) As Boolean
-        If email.IndexOf("@") >= 0 And email.IndexOf("@") <= email.Length & email.indexof(".") >= 0 & email.indexof(".") <= email.length Then
+        If email.IndexOf("@") >= 0 And email.IndexOf("@") <= email.Length & email.IndexOf(".") >= 0 & email.IndexOf(".") <= email.Length Then
             Return True
         Else
             Return False
