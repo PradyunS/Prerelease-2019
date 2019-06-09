@@ -4,7 +4,7 @@
         Dim selection As String
         Dim valid As Boolean = False
 
-        Console.WriteLine("1. add new member, 2. search for member, 3. membership ending month")
+        Console.WriteLine("1. add new member, 2. search for member")
         Console.Write("what action would you like to perform? ")
         Do
             selection = CStr(Console.ReadLine)
@@ -15,8 +15,6 @@
                         Call AddNewMember()
                     Case 2
                         Call SearchMembers()
-                    Case 3
-                        'Call EndingMonth()
                 End Select
             Else
                 Console.Write("enter a valid selection(1, 2, or 3): ")
@@ -191,50 +189,6 @@
         End If
 
     End Sub
-
-    ' Sub EndingMonth()
-    '     Dim values(recordCount), input, names(recordCount), email(recordCount), ids(recordCount), active(recordCount), month(recordCount) As String
-    '     Dim i As Integer = 0
-    '
-    '
-    '     FileOpen(1, "member.txt", OpenMode.Input)
-    '     While Not EOF(1)
-    '         values(i) = LineInput(1)
-    '         i += 1
-    '     End While
-    '     FileClose(1)
-    '
-    '     For a As Integer = 0 To recordCount
-    '         ids(a) = values(a).Split("!").First
-    '         names(a) = values(a).Split("!").Skip(1).First
-    '         email(a) = values(a).Split("!").Skip(2).First
-    '         month(a) = values(a).Split("!").Skip(3).First
-    '         active(a) = values(a).Split("!").Skip(4).First
-    '     Next
-    '
-    '     Console.Write("enter the month you would like to view as a number (01 to 12): ")
-    '     input = Console.ReadLine
-    '
-    '     Console.WriteLine(DisplaySearchTable)
-    '     For j As Integer = 0 To recordCount
-    '         If input = values(j).Substring(0, 2) Then
-    '             Console.WriteLine(ids(j).PadRight(20) & names(j).PadRight(20) & email(j).PadRight(40) & month(j).PadRight(20) & active(j).PadRight(20))
-    '         Else
-    '             Console.WriteLine("no members found")
-    '             Exit For
-    '         End If
-    '     Next
-    '
-    '
-    '
-    '
-    '     Console.Write("enter h to go back home or any other key to exit: ")
-    '     If Console.ReadLine = "h" Then
-    '         Call Main()
-    '     End If
-    '
-    '     Console.ReadKey()
-    ' End Sub
 
     Function validate(ByRef email As String) As Boolean
         If email.IndexOf("@") >= 0 And email.IndexOf("@") <= email.Length & email.IndexOf(".") >= 0 & email.IndexOf(".") <= email.Length Then
