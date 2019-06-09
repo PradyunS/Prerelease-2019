@@ -16,7 +16,7 @@
                     Case 2
                         Call SearchMembers()
                     Case 3
-                        Call EndingMonth()
+                        'Call EndingMonth()
                 End Select
             Else
                 Console.Write("enter a valid selection(1, 2, or 3): ")
@@ -95,15 +95,15 @@
             Call Main()
         End If
 
-        Console.ReadKey()
     End Sub
 
     Sub SearchMembers()
         Console.WriteLine()
-        Dim names(recordCount), email(recordCount), values(recordCount), ids(recordCount), search, month(recordCount), active(recordCount) As String
+        Dim names(recordCount), email(recordCount), values(recordCount), ids(recordCount), search, month(recordCount), active(recordCount), monthNum(recordCount) As String
         Dim isfound As Boolean = False
+        Dim isfoundMonth As Boolean = False
         Dim i As Integer = 0
-        Dim foundvalue As Integer
+        Dim foundvalue, foundMon(recordCount) As Integer
 
         FileOpen(1, "member.txt", OpenMode.Input)
         While Not EOF(1)
@@ -118,25 +118,33 @@
             email(a) = values(a).Split("!").Skip(2).First
             month(a) = values(a).Split("!").Skip(3).First
             active(a) = values(a).Split("!").Skip(4).First
+            monthNum(a) = values(a).Substring(0, 2)
         Next
 
-        Console.Write("enter an customer ID, or name to search for: ")
+        Console.Write("enter an customer ID, month number (01-12) or name to search for: ")
         search = Console.ReadLine.ToLower
+        'Console.Write(monthNum(1))
+        'Console.ReadKey()
 
         For s As Integer = 0 To recordCount
             Select Case search
-                Case Is = ids(s)
+                Case Is = ids(s) 'search by ID
                     foundvalue = s
                     isfound = True
-                Case = names(s).ToLower
+                Case = names(s).ToLower 'serach by full name
                     foundvalue = s
                     isfound = True
-                Case = names(s).Split(" ").First.ToLower
+                Case = names(s).Split(" ").First.ToLower 'search by first name
                     foundvalue = s
                     isfound = True
-                    'Case = month(s).ToLower
-                    '    foundvalue = s
-                    '    isfound = True
+                Case = monthNum(s) 'search by month (currently broken)
+                    If s > 0 Then
+                        If ids(s) = ids(s - 1) Then
+                            Exit For
+                        End If
+                    End If
+                    foundMon(s) = s
+                    isfoundMonth = True
             End Select
         Next s
 
@@ -146,8 +154,35 @@
         If isfound = True Then
             Console.WriteLine(DisplaySearchTable())
             Console.Write(ids(foundvalue).PadRight(20) & names(foundvalue).PadRight(20) & email(foundvalue).PadRight(40) & month(foundvalue).PadRight(20) & active(foundvalue).PadRight(20))
-        ElseIf isfound = False Then
+        ElseIf isfound = False And isfoundMonth = False Then
             Console.Write("your search was not found. make sure the ID number or name is correct")
+        End If
+
+
+        If isfoundMonth = True Then
+
+            Console.WriteLine(DisplaySearchTable)
+
+            For p As Integer = 0 To UBound(foundMon)
+                Console.WriteLine(ids(foundMon(p)).PadRight(20) & names(foundMon(p)).PadRight(20) & email(foundMon(p)).PadRight(40) & month(foundMon(p)).PadRight(20) & active(foundMon(p)).PadRight(20))
+            Next
+
+            If search <= CStr(Now).Split("/").Skip(1).First Then
+
+                Console.Write("do you want to save this information to a new file? (y/n): ")
+                If Console.ReadLine = "y" Then
+                    FileOpen(1, "expiredmembers.txt", OpenMode.Append)
+                    For m As Integer = 0 To recordCount
+                        If values(m).Substring(0, 2) < CStr(Now).Split("/").Skip(1).First Then
+                            PrintLine(1, names(m).PadRight(20) & email(m).PadRight(40))
+                        End If
+                    Next
+                    Console.WriteLine("success")
+                    FileClose(1)
+                End If
+
+            End If
+
         End If
 
         Console.Write("enter 'h' to go back home or any other key to exit: ")
@@ -155,64 +190,54 @@
             Call Main()
         End If
 
-        Console.ReadKey()
     End Sub
 
-    Sub EndingMonth()
-        Dim values(recordCount), input, names(recordCount), email(recordCount), ids(recordCount), active(recordCount), month(recordCount) As String
-        Dim i As Integer = 0
-
-
-        FileOpen(1, "member.txt", OpenMode.Input)
-        While Not EOF(1)
-            values(i) = LineInput(1)
-            i += 1
-        End While
-        FileClose(1)
-
-        For a As Integer = 0 To recordCount
-            ids(a) = values(a).Split("!").First
-            names(a) = values(a).Split("!").Skip(1).First
-            email(a) = values(a).Split("!").Skip(2).First
-            month(a) = values(a).Split("!").Skip(3).First
-            active(a) = values(a).Split("!").Skip(4).First
-        Next
-
-        Console.Write("enter the month you would like to view as a number (01 to 12): ")
-        input = Console.ReadLine
-
-        Console.WriteLine(DisplaySearchTable)
-        For j As Integer = 0 To recordCount
-            If input = values(j).Substring(0, 2) Then
-                Console.WriteLine(ids(j).PadRight(20) & names(j).PadRight(20) & email(j).PadRight(40) & month(j).PadRight(20) & active(j).PadRight(20))
-            Else
-                Console.WriteLine("no members found")
-                Exit For
-            End If
-        Next
-
-        Console.Write("do you want to save this information to a new file? (y/n): ")
-        If Console.ReadLine = "y" Then
-            FileOpen(1, "expiredmembers.txt", OpenMode.Append)
-            For m As Integer = 0 To recordCount
-                If values(m).Substring(0, 2) < CStr(Now).Split("/").Skip(1).First Then
-                    PrintLine(1, names(m).PadRight(20) & email(m).PadRight(40))
-                End If
-            Next
-            Console.WriteLine("success")
-            FileClose(1)
-        End If
-
-        Console.Write("enter h to go back home or any other key to exit: ")
-        If Console.ReadLine = "h" Then
-            Call Main()
-        End If
-
-        Console.ReadKey()
-    End Sub
+    ' Sub EndingMonth()
+    '     Dim values(recordCount), input, names(recordCount), email(recordCount), ids(recordCount), active(recordCount), month(recordCount) As String
+    '     Dim i As Integer = 0
+    '
+    '
+    '     FileOpen(1, "member.txt", OpenMode.Input)
+    '     While Not EOF(1)
+    '         values(i) = LineInput(1)
+    '         i += 1
+    '     End While
+    '     FileClose(1)
+    '
+    '     For a As Integer = 0 To recordCount
+    '         ids(a) = values(a).Split("!").First
+    '         names(a) = values(a).Split("!").Skip(1).First
+    '         email(a) = values(a).Split("!").Skip(2).First
+    '         month(a) = values(a).Split("!").Skip(3).First
+    '         active(a) = values(a).Split("!").Skip(4).First
+    '     Next
+    '
+    '     Console.Write("enter the month you would like to view as a number (01 to 12): ")
+    '     input = Console.ReadLine
+    '
+    '     Console.WriteLine(DisplaySearchTable)
+    '     For j As Integer = 0 To recordCount
+    '         If input = values(j).Substring(0, 2) Then
+    '             Console.WriteLine(ids(j).PadRight(20) & names(j).PadRight(20) & email(j).PadRight(40) & month(j).PadRight(20) & active(j).PadRight(20))
+    '         Else
+    '             Console.WriteLine("no members found")
+    '             Exit For
+    '         End If
+    '     Next
+    '
+    '
+    '
+    '
+    '     Console.Write("enter h to go back home or any other key to exit: ")
+    '     If Console.ReadLine = "h" Then
+    '         Call Main()
+    '     End If
+    '
+    '     Console.ReadKey()
+    ' End Sub
 
     Function validate(ByRef email As String) As Boolean
-        If email.IndexOf("@") >= 0 And email.IndexOf("@") <= email.Length & email.indexof(".") >= 0 & email.indexof(".") <= email.length Then
+        If email.IndexOf("@") >= 0 And email.IndexOf("@") <= email.Length & email.IndexOf(".") >= 0 & email.IndexOf(".") <= email.Length Then
             Return True
         Else
             Return False
