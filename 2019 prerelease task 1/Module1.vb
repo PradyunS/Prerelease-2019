@@ -97,11 +97,12 @@
 
     Sub SearchMembers()
         Console.WriteLine()
-        Dim names(recordCount), email(recordCount), values(recordCount), ids(recordCount), search, month(recordCount), active(recordCount), monthNum(recordCount) As String
+        Dim names(recordCount), email(recordCount), values(recordCount), ids(recordCount), search, month(recordCount), active(recordCount), monthNum(recordCount), input As String
         Dim isfound As Boolean = False
         Dim isfoundMonth As Boolean = False
+        Dim isNumericInput As Boolean = False
         Dim i As Integer = 0
-        Dim foundvalue, foundMon(recordCount) As Integer
+        Dim foundvalue, foundMon(recordCount), searchMon As Integer
 
         FileOpen(1, "member.txt", OpenMode.Input)
         While Not EOF(1)
@@ -116,11 +117,23 @@
             email(a) = values(a).Split("!").Skip(2).First
             month(a) = values(a).Split("!").Skip(3).First
             active(a) = values(a).Split("!").Skip(4).First
-            monthNum(a) = values(a).Substring(0, 2)
+            monthNum(a) = values(a).Substring(1, 1)
+            'Console.WriteLine(monthNum(a))
         Next
 
         Console.Write("enter an customer ID, month number (01-12) or name to search for: ")
-        search = Console.ReadLine.ToLower
+        input = Console.ReadLine
+
+        If IsNumeric(CInt(input)) = True Then
+            searchMon = CInt(input)
+            isNumericInput = True
+            Console.Write(searchMon)
+        Else
+            search = input.ToLower
+        End If
+
+
+
         'Console.Write(monthNum(1))
         'Console.ReadKey()
 
@@ -135,16 +148,23 @@
                 Case = names(s).Split(" ").First.ToLower 'search by first name
                     foundvalue = s
                     isfound = True
-                Case = monthNum(s) 'search by month (currently broken)
-                    If s > 0 Then
-                        If ids(s) = ids(s - 1) Then
-                            Exit For
-                        End If
-                    End If
-                    foundMon(s) = s
-                    isfoundMonth = True
             End Select
+
         Next s
+
+        If isNumericInput = True Then
+            For a As Integer = 0 To recordCount
+                If searchMon = monthNum(a) Then
+                    foundMon(a) = a
+                End If
+            Next
+        End If
+
+
+
+
+        Console.Write(foundMon(0))
+        Console.ReadKey()
 
         'output section
         Console.WriteLine()
@@ -160,7 +180,6 @@
         If isfoundMonth = True Then
 
             Console.WriteLine(DisplaySearchTable)
-
             For p As Integer = 0 To UBound(foundMon)
                 Console.WriteLine(ids(foundMon(p)).PadRight(20) & names(foundMon(p)).PadRight(20) & email(foundMon(p)).PadRight(40) & month(foundMon(p)).PadRight(20) & active(foundMon(p)).PadRight(20))
             Next

@@ -20,3 +20,14 @@ C:\Users\Pradyun Setti\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease tas
 C:\Users\Pradyun Setti\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.exe
 C:\Users\Pradyun Setti\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.xml
 C:\Users\Pradyun Setti\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.pdb
+C:\Users\prady\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\bin\Debug\2019 prerelease task 1.exe.config
+C:\Users\prady\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\bin\Debug\2019 prerelease task 1.exe
+C:\Users\prady\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\bin\Debug\2019 prerelease task 1.pdb
+C:\Users\prady\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\bin\Debug\2019 prerelease task 1.xml
+C:\Users\prady\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.vbprojAssemblyReference.cache
+C:\Users\prady\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\obj\Debug\_2019_prerelease_task_1.Resources.resources
+C:\Users\prady\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.vbproj.GenerateResource.cache
+C:\Users\prady\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.vbproj.CoreCompileInputs.cache
+C:\Users\prady\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.exe
+C:\Users\prady\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.xml
+C:\Users\prady\Source\Repos\PradyunS\Prerelease-2019\2019 prerelease task 1\obj\Debug\2019 prerelease task 1.pdb
