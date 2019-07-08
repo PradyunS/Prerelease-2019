@@ -1,6 +1,7 @@
 ﻿Module Module1
     Dim recordCount As Integer = LoadValues()
 
+
     Sub Main()
         Dim selection As String
         Dim valid As Boolean = False
@@ -18,31 +19,46 @@
         4. password generator
         5. tip calculator
         6. random number generator
-        7. Ding!
+        7. battleships
+        8. the entirety of 2018's prerelease
+        9. Ding!
          ")
         Console.Write("what action would you like to perform? ")
         Do
             selection = CStr(Console.ReadLine)
-            If selection = "1" Or selection = "2" Or selection = "3" Or selection = "4" Or selection = "5" Or selection = "6" Or selection = "7" Then
+            If selection = "1" Or selection = "2" Or selection = "3" Or selection = "4" Or selection = "5" Or selection = "6" Or selection = "7" Or selection = "8" Or selection = "9" Then
                 valid = True
                 Select Case selection
                     Case 1
+                        Console.Clear()
                         Call AddNewMember()
                     Case 2
+                        Console.Clear()
                         Call SearchMembers()
                     Case 3
+                        Console.Clear()
                         Call EndingMonth()
                     Case 4
+                        Console.Clear()
                         Call passwordGenerator()
                     Case 5
+                        Console.Clear()
                         Call tipCalculate()
                     Case 6
+                        Console.Clear()
                         Call randomNum()
                     Case 7
+                        Console.Clear()
+                        Call battleship()
+                    Case 8
+                        Console.Clear()
+                        Call cabinBook()
+                    Case 9
+                        Console.Clear()
                         Call ding()
                 End Select
             Else
-                Console.Write("enter a valid selection(1, 2, or 3): ")
+                Console.Write("enter a valid selection(1, 2, 3, 4, 5, 6, or (most importantly) 7): ")
             End If
         Loop Until valid = True
     End Sub
@@ -275,11 +291,218 @@
         Call goHome()
     End Sub
 
+    Sub battleship()
+        Dim board(7, 7) As String
+        Dim ix, iy As String
+        Dim aihit(1) As String
+
+        For r As Integer = 0 To 7
+            For c As Integer = 0 To 7
+                board(r, c) = "~"
+            Next c
+        Next r
+
+        'setting up ships
+        For i As Integer = 1 To 3
+            board(2, i) = "S"
+        Next
+        For i As Integer = 1 To 5
+            board(i, 6) = "S"
+        Next
+
+        Console.Write("  1 2 3 4 5 6 7 8") 'display x coords
+        For r As Integer = 0 To 7  'display board
+            Console.WriteLine()
+            Console.Write(r + 1 & " ") 'display y coords
+            For c As Integer = 0 To 7
+                Console.Write(board(r, c).PadRight(2))
+            Next c
+        Next r
+
+        Console.WriteLine()
+
+        For x As Integer = 1 To 10
+            Console.Write("enter x coordinate to hit: ")
+            ix = CStr(Console.ReadLine) - 1 '-1 bc array 
+
+            Console.Write("enter y coordinate to hit: ")
+            iy = CStr(Console.ReadLine) - 1
+
+
+            'If 0 = 0 Then
+            'Console.Write("you have hit a ship! ")
+            'End If
+            'i guess they never miss huh
+
+
+            If board(CInt(iy), CInt(ix)) = "S" Then
+                Console.Write("you have hit a ship! ")
+                board(iy, ix) = "*"
+            ElseIf board(iy, ix) = "~" Then
+                Console.Write("you have missed")
+                board(iy, ix) = "#"
+            End If
+            Console.WriteLine()
+
+            Console.Write("  1 2 3 4 5 6 7 8")
+            For r As Integer = 0 To 7  'display board
+                Console.WriteLine()
+                Console.Write(r + 1 & " ")
+                For c As Integer = 0 To 7
+                    Console.Write(board(r, c).PadRight(2))
+                Next c
+            Next r
+
+            Threading.Thread.Sleep(1000)
+            Console.WriteLine()
+
+            For i As Integer = 0 To 1
+                aihit(i) = CStr(Int(8 * Rnd() + 1))
+            Next i
+
+
+            If board(CInt(aihit(0)), CInt(aihit(1))) = "S" Then
+                Console.Write("Computer has hit a ship " & aihit(0) & ", " & aihit(1))
+                board(aihit(0), aihit(1)) = "*"
+            ElseIf board(aihit(0), aihit(1)) = "~" Then
+                Console.Write("computer has missed ")
+                board(aihit(0), aihit(1)) = "#"
+            End If
+            Console.WriteLine()
+
+            Console.Write("  1 2 3 4 5 6 7 8")
+            For r As Integer = 0 To 7  'display board
+                Console.WriteLine()
+                Console.Write(r + 1 & " ")
+                For c As Integer = 0 To 7
+                    Console.Write(board(r, c).PadRight(2))
+                Next c
+            Next r
+            Console.WriteLine()
+        Next x
+
+    End Sub
+
+    Sub cabinBook()
+        Dim cabinName() As String = {"Hetty", "Poppy", "Blue Skies", "Bay View", "Happy Days", "Summer Joy", "Walkers' Rest", "Bertie", "Green Forest Lodge", "Coppice Lodge"}
+        Dim capacity() As Integer = {4, 4, 4, 6, 6, 6, 8, 8, 10, 10}
+        Dim peak() As Decimal = {400, 400, 500, 650, 695, 800, 950, 1050, 1200, 1500}
+        Dim offPeak() As Decimal = {250, 250, 350, 500, 550, 600, 750, 850, 950, 1150}
+        Dim booked(16, 9) As Boolean
+        Dim bkcode(16, 9) As Integer
+        Dim bookedweeks As Integer = 0
+
+        Randomize()
+
+        Dim cabinChoice, weekNumber As Integer
+        Dim cost As Decimal
+
+        ' bookings 2D array - rows: 17 weeks, columns: 10 log cabins
+        ' initialise bookings array - no bookings made at program start
+        For weeks As Integer = 0 To UBound(booked)
+            For cabins As Integer = 0 To UBound(cabinName)
+                booked(weeks, cabins) = False
+            Next cabins
+        Next weeks
+
+        Console.WriteLine()
+
+        Console.WriteLine("#  HOLIDAY PARK BOOKING SYSTEM  #")
+
+        Console.WriteLine()
+
+        For i As Integer = 0 To UBound(cabinName)
+            Console.WriteLine(CStr(i + 1 & ". " & cabinName(i)))
+        Next i
+
+        Console.WriteLine()
+
+        Do
+            Console.Write("Which cabin do you want to look at? Enter a number: ")
+            cabinChoice = CInt(Trim(Console.ReadLine))
+            If (cabinChoice >= 1) And (cabinChoice <= 10) Then
+                Exit Do
+            Else
+                Console.WriteLine("Error - invalid cabin choice. Try again.")
+            End If
+        Loop
+
+
+
+        Do
+            Console.Write("Enter a week to display bookings - weeks 23 to 39: ")
+            weekNumber = CInt(Trim(Console.ReadLine))
+            If (weekNumber >= 23) And (weekNumber <= 39) Then
+                Exit Do
+            Else
+                Console.WriteLine("Error - you may only choose from weeks 23 to 39, inclusive.")
+            End If
+        Loop
+
+        Console.WriteLine()
+
+        For i As Integer = 0 To UBound(cabinName)
+            If i = cabinChoice - 1 Then
+                Select Case weekNumber
+                    Case 23 To 26, 36 To 39 : cost = offPeak(i)
+                        Console.WriteLine("WEEK NUMBER".PadRight(20) & "CABIN NAME".PadRight(20) & "CAPACITY".PadRight(20) & "COST".PadRight(20) & "BOOKING STATUS")
+                        Console.Write(("Week " & CStr(weekNumber)).PadRight(20) & cabinName(i).PadRight(20) & CStr(capacity(i)).PadRight(20) & FormatCurrency(offPeak(i)).PadRight(20))
+                        weekNumber = weekNumber - 23
+                        If booked(weekNumber, cabinChoice) = False Then
+                            Console.WriteLine("Not booked")
+                        Else
+                            Console.WriteLine("Booked")
+                        End If
+                    Case 27 To 35 : cost = peak(i)
+                        Console.WriteLine("WEEK NUMBER".PadRight(20) & "CABIN NAME".PadRight(20) & "CAPACITY".PadRight(20) & "COST".PadRight(20) & "BOOKING STATUS")
+                        Console.Write(("Week " & CStr(weekNumber)).PadRight(20) & cabinName(i).PadRight(20) & CStr(capacity(i)).PadRight(20) & FormatCurrency(peak(i)).PadRight(20))
+                        weekNumber = weekNumber - 23
+                        If booked(weekNumber, cabinChoice) = False Then
+                            Console.WriteLine("Not booked")
+                        Else
+                            Console.WriteLine("Booked")
+                        End If
+                End Select
+            End If
+        Next i
+
+        Console.WriteLine(weekNumber)
+        Do
+            Console.Write("how long will you be staying: ")
+            bookedweeks = CInt(Console.ReadLine)
+            If bookedweeks + weekNumber >= 17 Then
+                Console.WriteLine("sorry, we wont be open for that long. choose a smaller number.")
+            ElseIf bookedweeks + weekNumber < 17 Then
+                For i As Integer = 0 To bookedweeks
+                    bkcode(weekNumber + i, cabinChoice) = (CInt(Int(170 * Rnd() + 1)))
+                Next i
+                Exit Do
+            End If
+        Loop
+
+        If bookedweeks >= 3 Then
+            Select Case weekNumber
+                Case 23 To 26, 36 To 39
+                    cost = offPeak(cabinChoice)
+                Case 27 To 35
+                    cost = peak(cabinChoice)
+            End Select
+            cost = cost * 0.9
+            Console.Write("your final price, with a 10% discount applied, is: " & FormatCurrency(cost) & " rather than " & FormatCurrency(cost / 0.9))
+        ElseIf bookedweeks < 3 Then
+            Console.Write("your final price is: " & FormatCurrency(cost))
+        End If
+
+        Call goHome()
+
+    End Sub
+
     Sub ding()
         My.Computer.Audio.Play("ding.wav", AudioPlayMode.WaitToComplete)
 
         Call goHome()
     End Sub
+
 
     Sub goHome()
         Console.WriteLine()
