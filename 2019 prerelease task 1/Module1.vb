@@ -7,8 +7,8 @@
 
         'display title sequence
         Console.WriteLine("#########################################################")
-        Console.WriteLine("############Dwight Schrute's Gym For Muscules############")
-        Console.WriteLine("###################(and other stuff)#####################")
+        Console.WriteLine("##########  Dwight Schrute's Gym For Muscules  ##########")
+        Console.WriteLine("#################  (and other stuff)  ###################")
         Console.WriteLine("#########################################################")
 
         Console.WriteLine("
@@ -112,11 +112,7 @@
         Print(1, recordCount + 1)
         FileClose(1)
 
-        Console.Write("enter h to go back home or enter key to exit: ")
-        If Console.ReadLine = "h" Then
-            Call Main()
-        End If
-
+        Call goHome()
     End Sub
 
     Sub SearchMembers()
@@ -171,11 +167,7 @@
             Console.Write("your search was not found. make sure the ID number or name is correct")
         End If
 
-        Console.Write("enter 'h' to go back home or enter key to exit: ")
-        If Console.ReadLine = "h" Then
-            Call Main()
-        End If
-
+        Call goHome()
 
     End Sub
 
@@ -229,10 +221,7 @@
             End If
         End If
 
-        Console.Write("enter h to go back home or enter key to exit: ")
-        If Console.ReadLine = "h" Then
-            Call Main()
-        End If
+        Call goHome()
 
     End Sub
 
@@ -253,11 +242,7 @@
 
         Console.WriteLine("your password is: " & password)
 
-        Console.ReadKey()
-        Console.Write("enter h to go back home or enter key to exit: ")
-        If Console.ReadLine = "h" Then
-            Call Main()
-        End If
+        Call goHome()
     End Sub
 
     Sub tipCalculate()
@@ -273,11 +258,7 @@
 
         Console.WriteLine("your tip amount is: " & tip & ", bringing your total to " & price + tip)
 
-        Console.Write("enter h to go back home or enter key to exit: ")
-        If Console.ReadLine = "h" Then
-            Call Main()
-        End If
-
+        Call goHome()
     End Sub
 
     Sub randomNum()
@@ -291,16 +272,16 @@
 
         Console.WriteLine("your number is (drumroll please): " & num)
 
-        Console.Write("enter h to go back home or enter key to exit: ")
-        If Console.ReadLine = "h" Then
-            Call Main()
-        End If
-
+        Call goHome()
     End Sub
 
     Sub ding()
         My.Computer.Audio.Play("ding.wav", AudioPlayMode.WaitToComplete)
 
+        Call goHome()
+    End Sub
+
+    Sub goHome()
         Console.WriteLine()
         Console.Write("enter h to go back home or enter key to exit: ")
         If Console.ReadLine = "h" Then
