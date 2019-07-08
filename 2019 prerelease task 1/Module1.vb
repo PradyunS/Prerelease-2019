@@ -21,44 +21,39 @@
         6. random number generator
         7. battleships
         8. the entirety of 2018's prerelease
-        9. Ding!
+        9. rock paper scissors
+        10. Ding!
          ")
         Console.Write("what action would you like to perform? ")
         Do
             selection = CStr(Console.ReadLine)
-            If selection = "1" Or selection = "2" Or selection = "3" Or selection = "4" Or selection = "5" Or selection = "6" Or selection = "7" Or selection = "8" Or selection = "9" Then
+            If selection = "1" Or selection = "2" Or selection = "3" Or selection = "4" Or selection = "5" Or selection = "6" Or selection = "7" Or selection = "8" Or selection = "9" Or selection = "10" Then
                 valid = True
+                Console.Clear()
                 Select Case selection
                     Case 1
-                        Console.Clear()
                         Call AddNewMember()
                     Case 2
-                        Console.Clear()
                         Call SearchMembers()
                     Case 3
-                        Console.Clear()
                         Call EndingMonth()
                     Case 4
-                        Console.Clear()
                         Call passwordGenerator()
                     Case 5
-                        Console.Clear()
                         Call tipCalculate()
                     Case 6
-                        Console.Clear()
                         Call randomNum()
                     Case 7
-                        Console.Clear()
                         Call battleship()
                     Case 8
-                        Console.Clear()
                         Call cabinBook()
                     Case 9
-                        Console.Clear()
+                        Call rps()
+                    Case 10
                         Call ding()
                 End Select
             Else
-                Console.Write("enter a valid selection(1, 2, 3, 4, 5, 6, or (most importantly) 7): ")
+                Console.Write("enter a valid selection (1-9) ")
             End If
         Loop Until valid = True
     End Sub
@@ -495,6 +490,45 @@
 
         Call goHome()
 
+    End Sub
+
+    Sub rps()
+        Dim p1input, p2input, output As String
+        Randomize()
+
+        Console.Write("your move. rock (r) paper (p) scissors(s)")
+        p1input = Console.ReadLine
+
+        p2input = CStr(Int(3 * Rnd() + 1))
+
+        Select Case p2input  '1 = r, 2 = p, 3 = s
+            Case "1"
+                If p1input = "r" Then
+                    Console.Write("tie")
+                ElseIf p1input = "p" Then
+                    Console.Write("lose")
+                ElseIf p1input = "s" Then
+                    Console.Write("win")
+                End If
+            Case "2"
+                If p1input = "r" Then
+                    Console.Write("lose")
+                ElseIf p1input = "p" Then
+                    Console.Write("tie")
+                ElseIf p1input = "s" Then
+                    Console.Write("win")
+                End If
+            Case "3"
+                If p1input = "r" Then
+                    Console.Write("win")
+                ElseIf p1input = "p" Then
+                    Console.Write("lose")
+                ElseIf p1input = "s" Then
+                    Console.Write("tie")
+                End If
+        End Select
+
+        Call goHome()
     End Sub
 
     Sub ding()
