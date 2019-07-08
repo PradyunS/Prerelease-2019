@@ -8,13 +8,22 @@
         'display title sequence
         Console.WriteLine("#########################################################")
         Console.WriteLine("############Dwight Schrute's Gym For Muscules############")
+        Console.WriteLine("###################(and other stuff)#####################")
         Console.WriteLine("#########################################################")
 
-        Console.WriteLine("1. add new member, 2. search for member, 3. membership ending month")
+        Console.WriteLine("
+        1. add new member
+        2. search for member
+        3. membership ending month
+        4. password generator
+        5. tip calculator
+        6. random number generator
+        7. Ding!
+         ")
         Console.Write("what action would you like to perform? ")
         Do
             selection = CStr(Console.ReadLine)
-            If selection = "1" Or selection = "2" Or selection = "3" Then
+            If selection = "1" Or selection = "2" Or selection = "3" Or selection = "4" Or selection = "5" Or selection = "6" Or selection = "7" Then
                 valid = True
                 Select Case selection
                     Case 1
@@ -23,6 +32,14 @@
                         Call SearchMembers()
                     Case 3
                         Call EndingMonth()
+                    Case 4
+                        Call passwordGenerator()
+                    Case 5
+                        Call tipCalculate()
+                    Case 6
+                        Call randomNum()
+                    Case 7
+                        Call ding()
                 End Select
             Else
                 Console.Write("enter a valid selection(1, 2, or 3): ")
@@ -42,7 +59,6 @@
         Do
             Console.Write("enter your email address: ")
             email = Console.ReadLine
-
             valid = validate(email)
         Loop Until valid = True
 
@@ -218,6 +234,78 @@
             Call Main()
         End If
 
+    End Sub
+
+    Sub passwordGenerator()
+        Dim length As Integer
+        Dim input, password As String
+        Randomize()
+
+        Console.Write("how long should your password be in characters: ")
+        input = Console.ReadLine
+        Dim chars(input) As Char
+
+
+        For i As Integer = 0 To input
+            chars(i) = Chr(Int(125 * Rnd() + 31))
+            password += chars(i)
+        Next
+
+        Console.WriteLine("your password is: " & password)
+
+        Console.ReadKey()
+        Console.Write("enter h to go back home or enter key to exit: ")
+        If Console.ReadLine = "h" Then
+            Call Main()
+        End If
+    End Sub
+
+    Sub tipCalculate()
+        Dim price, tip As Double
+        Dim tipAmount As Integer = 15
+
+        Console.Write("how much is your meal?: ")
+        price = Console.ReadLine
+        Console.Write("what is the percentage you would like to tip: ")
+        tipAmount = Console.ReadLine
+
+        tip = price * (tipAmount / 100)
+
+        Console.WriteLine("your tip amount is: " & tip & ", bringing your total to " & price + tip)
+
+        Console.Write("enter h to go back home or enter key to exit: ")
+        If Console.ReadLine = "h" Then
+            Call Main()
+        End If
+
+    End Sub
+
+    Sub randomNum()
+        Dim length, num As Integer
+        Randomize()
+
+        Console.Write("how long should the number be? ")
+        length = Console.ReadLine
+
+        num = CInt(Int(length * Rnd()))
+
+        Console.WriteLine("your number is (drumroll please): " & num)
+
+        Console.Write("enter h to go back home or enter key to exit: ")
+        If Console.ReadLine = "h" Then
+            Call Main()
+        End If
+
+    End Sub
+
+    Sub ding()
+        My.Computer.Audio.Play("ding.wav", AudioPlayMode.WaitToComplete)
+
+        Console.WriteLine()
+        Console.Write("enter h to go back home or enter key to exit: ")
+        If Console.ReadLine = "h" Then
+            Call Main()
+        End If
     End Sub
 
     Function validate(ByRef email As String) As Boolean
