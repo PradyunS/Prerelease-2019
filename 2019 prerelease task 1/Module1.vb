@@ -7,11 +7,18 @@
 
         'display title sequence
         Console.WriteLine("#########################################################")
-        Console.WriteLine("############Dwight Schrute's Gym For Muscules############")
+        Console.WriteLine("##########  Dwight Schrute's Gym For Muscules  ##########")
+        Console.WriteLine("#################  by Pradyun Setti  ####################")
         Console.WriteLine("#########################################################")
 
-        Console.WriteLine("1. add new member, 2. search for member, 3. membership ending month")
+        Console.WriteLine("
+        1. add new member
+        2. search for member
+        3. membership ending month")
+        Console.WriteLine()
+
         Console.Write("what action would you like to perform? ")
+
         Do
             selection = CStr(Console.ReadLine)
             If selection = "1" Or selection = "2" Or selection = "3" Then
@@ -96,11 +103,7 @@
         Print(1, recordCount + 1)
         FileClose(1)
 
-        Console.Write("enter h to go back home or enter key to exit: ")
-        If Console.ReadLine = "h" Then
-            Call Main()
-        End If
-
+        Call goHome()
     End Sub
 
     Sub SearchMembers()
@@ -155,12 +158,7 @@
             Console.Write("your search was not found. make sure the ID number or name is correct")
         End If
 
-        Console.Write("enter 'h' to go back home or enter key to exit: ")
-        If Console.ReadLine = "h" Then
-            Call Main()
-        End If
-
-
+        Call goHome()
     End Sub
 
     Sub EndingMonth()
@@ -213,11 +211,15 @@
             End If
         End If
 
+        Call goHome()
+    End Sub
+
+    Sub goHome()
+        Console.WriteLine()
         Console.Write("enter h to go back home or enter key to exit: ")
         If Console.ReadLine = "h" Then
             Call Main()
         End If
-
     End Sub
 
     Function validate(ByRef email As String) As Boolean
