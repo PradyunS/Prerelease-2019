@@ -285,6 +285,7 @@
         Console.WriteLine()
         Console.Write("enter h to go back home or enter key to exit: ")
         If Console.ReadLine = "h" Then
+            Console.Clear()
             Call Main()
         End If
     End Sub
