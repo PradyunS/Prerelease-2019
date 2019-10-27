@@ -175,7 +175,7 @@
     Sub EndingMonth()
         Dim values(recordCount), names(recordCount), email(recordCount), ids(recordCount), active(recordCount), month(recordCount), found(99) As String
         Dim i As Integer = 0
-        Dim input As String
+        Dim input As Integer
         Dim flag As Boolean = False
 
 
@@ -195,11 +195,11 @@
         Next
 
         Console.Write("enter the month you would like to view as a number (01 to 12): ")
-        input = Console.ReadLine.ToLower
+        input = Console.ReadLine
 
         Console.WriteLine(DisplaySearchTable)
         For j As Integer = 0 To recordCount
-            If CInt(values(j).Substring(0, 2)) <= input Then
+            If input = CInt(values(j).Substring(1, 1)) Then
                 Console.WriteLine(ids(j).PadRight(20) & names(j).PadRight(20) & email(j).PadRight(40) & month(j).PadRight(20) & active(j).PadRight(20))
                 flag = True
             ElseIf j = recordCount And flag = False Then
@@ -208,19 +208,20 @@
             End If
         Next
 
-        Console.Write("these members' membership has expired. do you want to save their information to a new file? (y/n): ")
+        If input < CStr(Now).Split("/").Skip(1).First Then
+            Console.Write("these members' membership has expired. do you want to save their information to a new file? (y/n): ")
 
-        If Console.ReadLine = "y" Then
-            FileOpen(1, "expiredmembers.txt", OpenMode.Output)
-            For m As Integer = 0 To recordCount
-                If CInt(values(m).Substring(0, 2)) <= input Then
-                    PrintLine(1, ids(m).PadRight(20) & names(m).PadRight(20) & email(m).PadRight(40))
-                End If
-            Next
-            Console.WriteLine("success")
-            FileClose(1)
+            If Console.ReadLine = "y" Then
+                FileOpen(1, "expiredmembers.txt", OpenMode.Append)
+                For m As Integer = 0 To recordCount
+                    If values(m).Substring(0, 2) < CStr(Now).Split("/").Skip(1).First Then
+                        PrintLine(1, names(m).PadRight(20) & email(m).PadRight(40))
+                    End If
+                Next
+                Console.WriteLine("success")
+                FileClose(1)
+            End If
         End If
-
 
         Call goHome()
     End Sub
@@ -254,7 +255,6 @@
 
         Return joinMonth & letter & num(0) & num(1) & num(2) & num(3)
     End Function
-
 
     Function DisplaySearchTable() As String
         Return "ID number".PadRight(20) & "Name".PadRight(20) & "Email".PadRight(40) & "Month joined".PadRight(20) & "member?".PadRight(20)
