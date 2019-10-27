@@ -32,7 +32,7 @@
                         Call EndingMonth()
                 End Select
             Else
-                Console.Write("enter a valid selection(1, 2, or 3): ")
+                Console.Write("enter a valid selection (1, 2, or 3): ")
             End If
         Loop Until valid = True
     End Sub
@@ -60,7 +60,7 @@
             activestatus = False
         Else
             activestatus = True
-            Console.Write("oh you wanna try crash this? you paying for membership.")
+            Console.Write("unknown input. you're paying for membership.")
         End If
 
         id = GenerateID(name, email, joinMonth)
@@ -108,11 +108,13 @@
 
     Sub SearchMembers()
         Console.WriteLine()
-        Dim names(recordCount), email(recordCount), values(recordCount), ids(recordCount), search, month(recordCount), active(recordCount) As String
+        Dim names(recordCount), firstNames(recordCount), email(recordCount), values(recordCount), ids(recordCount), search, month(recordCount), active(recordCount) As String
         Dim isfound As Boolean = False
         Dim i As Integer = 0
-        Dim foundvalue As Integer
+        Dim count As Integer = 0
+        Dim foundvalue(99) As Integer
 
+        'input values from files
         FileOpen(1, "member.txt", OpenMode.Input)
         While Not EOF(1)
             values(i) = LineInput(1)
@@ -120,31 +122,34 @@
         End While
         FileClose(1)
 
+        'split values into attributes
         For a As Integer = 0 To recordCount
             ids(a) = values(a).Split("!").First
             names(a) = values(a).Split("!").Skip(1).First
             email(a) = values(a).Split("!").Skip(2).First
             month(a) = values(a).Split("!").Skip(3).First
             active(a) = values(a).Split("!").Skip(4).First
+            firstNames(a) = names(a).Split(" ").First.ToLower
         Next
 
-        Console.Write("enter an customer ID, or name to search for: ")
+        Console.Write("enter an customer ID or name to search for: ")
         search = Console.ReadLine.ToLower
+
 
         For s As Integer = 0 To recordCount
             Select Case search
-                Case Is = ids(s)
-                    foundvalue = s
+                Case = ids(s)
+                    foundvalue(count) = s
                     isfound = True
+                    count += 1
                 Case = names(s).ToLower
-                    foundvalue = s
+                    foundvalue(count) = s
                     isfound = True
-                Case = names(s).Split(" ").First.ToLower
-                    foundvalue = s
+                    count += 1
+                Case = firstNames(s)
+                    foundvalue(count) = s
                     isfound = True
-                    'Case = month(s).ToLower
-                    '    foundvalue = s
-                    '    isfound = True
+                    count += 1
             End Select
         Next s
 
@@ -153,7 +158,13 @@
 
         If isfound = True Then
             Console.WriteLine(DisplaySearchTable())
-            Console.Write(ids(foundvalue).PadRight(20) & names(foundvalue).PadRight(20) & email(foundvalue).PadRight(40) & month(foundvalue).PadRight(20) & active(foundvalue).PadRight(20))
+            If count > 1 Then
+                For x As Integer = 0 To count - 1
+                    Console.Write(ids(foundvalue(x)).PadRight(20) & names(foundvalue(x)).PadRight(20) & email(foundvalue(x)).PadRight(40) & month(foundvalue(x)).PadRight(20) & active(foundvalue(x)).PadRight(20))
+                Next x
+            ElseIf count = 1 Then
+                Console.Write(ids(foundvalue(0)).PadRight(20) & names(foundvalue(0)).PadRight(20) & email(foundvalue(0)).PadRight(40) & month(foundvalue(0)).PadRight(20) & active(foundvalue(0)).PadRight(20))
+            End If
         ElseIf isfound = False Then
             Console.Write("your search was not found. make sure the ID number or name is correct")
         End If
@@ -199,6 +210,7 @@
 
         If input < CStr(Now).Split("/").Skip(1).First Then
             Console.Write("these members' membership has expired. do you want to save their information to a new file? (y/n): ")
+
             If Console.ReadLine = "y" Then
                 FileOpen(1, "expiredmembers.txt", OpenMode.Append)
                 For m As Integer = 0 To recordCount
@@ -216,8 +228,8 @@
 
     Sub goHome()
         Console.WriteLine()
-        Console.Write("enter h to go back home or enter key to exit: ")
-        If Console.ReadLine = "h" Then
+        Console.Write("enter 'h' to go back home or press the enter key to exit: ")
+        If Console.ReadLine.Trim = "h" Then
             Console.Clear()
             Call Main()
         End If
