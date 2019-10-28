@@ -39,12 +39,13 @@
 
     Sub AddNewMember()
         Dim id, name, email, joinMonth, activestatus, mon As String
+        Dim memberInput As String
         Dim valid As Boolean = False
         joinMonth = CStr(Now).Split("/").Skip(1).First
 
         Console.WriteLine()
         Console.Write("enter your first and last name: ")
-        name = Console.ReadLine & " "
+        name = Console.ReadLine
 
         Do
             Console.Write("enter your email address: ")
@@ -54,9 +55,11 @@
         Loop Until valid = True
 
         Console.Write("do you want to buy a membership? (y/n): ")
-        If Console.ReadLine() = "y" Then
+        memberInput = Console.ReadLine
+
+        If memberInput = "y" Then
             activestatus = True
-        ElseIf Console.ReadLine() = "n" Then
+        ElseIf memberInput = "n" Then
             activestatus = False
         Else
             activestatus = True
@@ -199,7 +202,7 @@
 
         Console.WriteLine(DisplaySearchTable)
         For j As Integer = 0 To recordCount
-            If CInt(values(j).Substring(0, 2)) <= input Then
+            If CInt(values(j).Substring(0, 2)) = input Then
                 Console.WriteLine(ids(j).PadRight(20) & names(j).PadRight(20) & email(j).PadRight(40) & month(j).PadRight(20) & active(j).PadRight(20))
                 flag = True
             ElseIf j = recordCount And flag = False Then
@@ -208,12 +211,12 @@
             End If
         Next
 
-        Console.Write("these members' membership has expired. do you want to save their information to a new file? (y/n): ")
+        Console.Write("these members' membership is expiring this month. do you want to save their information to a new file? (y/n): ")
 
         If Console.ReadLine = "y" Then
             FileOpen(1, "expiredmembers.txt", OpenMode.Output)
             For m As Integer = 0 To recordCount
-                If CInt(values(m).Substring(0, 2)) <= input Then
+                If CInt(values(m).Substring(0, 2)) = input Then
                     PrintLine(1, ids(m).PadRight(20) & names(m).PadRight(20) & email(m).PadRight(40))
                 End If
             Next

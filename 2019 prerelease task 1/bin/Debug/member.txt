@@ -8,3 +8,8 @@
 06756543!Kevin Malone!Kevin@chillipies.com!JUN!False
 06793077!Oscar Martinez!OMartinez@gmail.com!JUN!True
 08135894!Michael Stevens!cornismylife@mmcorn.com!AUG!TRUE
+10808010!Pam Halpert!arthoe101@dundermifflin.com!OCT!True
+10653775!Andrew Bernard!KyleDrew@hotmail.com!OCT!True
+10826460!Raymond Holt!velvetthunder@gmail.com!OCT!True
+10848264!Tahani Al Jamil!notkamilah@imbetterthanyou.com!OCT!False
+10749715!Jake Peralta!jakey@nodaddyissues.com!OCT!False
