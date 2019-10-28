@@ -160,7 +160,7 @@
         Console.WriteLine()
 
         If isfound = True Then
-            Console.WriteLine(DisplaySearchTable())
+            Console.Write(DisplaySearchTable())
             If count > 1 Then
                 For x As Integer = 0 To count - 1
                     Console.Write(ids(foundvalue(x)).PadRight(20) & names(foundvalue(x)).PadRight(20) & email(foundvalue(x)).PadRight(40) & month(foundvalue(x)).PadRight(20) & active(foundvalue(x)).PadRight(20))
